@@ -8,18 +8,18 @@
       <v-list dense>
         <v-list-item @click="">
           <v-list-item-action>
-            <v-icon>mdi-camera</v-icon>
+            <v-icon>mdi-note</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Photos</v-list-item-title>
+            <v-list-item-title>Memos</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item @click="">
           <v-list-item-action>
-            <v-icon>mdi-upload</v-icon>
+            <v-icon>mdi-plus</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Upload</v-list-item-title>
+            <v-list-item-title>Add memo</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -30,14 +30,17 @@
       clipped-left
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>My Photo Lib</v-toolbar-title>
+      <v-toolbar-title>My Memo Lib</v-toolbar-title>
     </v-app-bar>
 
 
 
     <v-footer app>
-      <span>&copy; 2019</span>
+      <span>&copy; hiroki nagamine 2019.</span>
     </v-footer>
+    <v-content>
+      <router-view/>
+    </v-content>
   </v-app>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-  <v-container text-xs-center>
+  <v-container text-center>
     <v-layout row wrap justify-center>
       <v-flex xs12>
         <h1>Add Memo</h1>

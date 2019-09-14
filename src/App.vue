@@ -2,12 +2,14 @@
  <v-app id="inspire">
     <v-app-bar
       app
-      clipped-left
     >
-      <v-app-bar-nav-icon @click="toggleSideMenu"></v-app-bar-nav-icon>
-      <v-toolbar-title class="headline text-uppercase">
+      <v-app-bar-nav-icon v-show= "$store.state.login_user" @click="toggleSideMenu"></v-app-bar-nav-icon>
+      <v-app-bar-title class="headline text-uppercase">
           <span>My Memo Lib</span>
-      </v-toolbar-title>
+      </v-app-bar-title>
+      <v-app-bar-items v-if="$store.state.login_user" text-right>
+        <v-btn @click="logout">Logout</v-btn>
+      </v-app-bar-items>
     </v-app-bar>
     <SideNav/>
 
@@ -21,6 +23,7 @@
 </template>
 
 <script>
+import firebase from 'firebase'
 import { mapActions } from 'vuex'
 import SideNav from './components/SideNav'
   export default {
@@ -28,13 +31,24 @@ import SideNav from './components/SideNav'
     components: {
       SideNav
     },
+    created () {
+      firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+          this.setLoginUser(user)
+          if (this.$router.currentRoute.name === 'home') this.$router.push({ name: 'memos'})
+        } else {
+          this.deleteLoginUser()
+          this.$router.push({ name: 'home'})
+        }
+      })
+    },
     data () {
       return {
         //
       }
     },
     methods: {
-      ...mapActions(['toggleSideMenu'])
+      ...mapActions(['toggleSideMenu', 'setLoginUser', 'logout', 'deleteLoginUser'])
     }
   }
 </script>

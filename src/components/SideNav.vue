@@ -3,11 +3,11 @@
     <v-list class="pa-1">
           <v-list-item avatar>
             <v-list-item-avatar>
-              <img src="https://avatars2.githubusercontent.com/u/1363954?s=460&v=4">
+              <img v-if ="photoURL" :src="photoURL">
             </v-list-item-avatar>
 
             <v-list-item-content>
-              <v-list-item-title>Kazuya Kojima</v-list-item-title>
+              <v-list-item-title>{{ userName }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list>
@@ -27,14 +27,17 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
 export default {
   data () {
     return {
       items: [
-        { title: 'Home',icon: 'mdi-home' , link: {name: 'home'} },
         { title: 'Memos',icon: 'mdi-note' , link: {name: 'memos'} }
       ]
     }
+  },
+  computed: {
+    ...mapGetters(['userName','photoURL'])
   }
 }
 </script>

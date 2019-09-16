@@ -47,7 +47,6 @@ created () {
       } else {
           this.addMemo(this.memo)
       }
-      this.addMemo(this.memo)
       this.$router.push({ name: 'memos'})
       this.memo = {}
     },

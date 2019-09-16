@@ -20,6 +20,7 @@
       <router-view/>
     </v-content>
     <v-footer app>
+    <div class="flex-grow-1"></div>
       <span>&copy; hiroki nagamine 2019.</span>
     </v-footer>
   </v-app>

@@ -25,6 +25,16 @@
 import { mapActions } from 'vuex'
 
 export default {
+created () {
+  if (!this.$route.params.memo_id) return
+
+    const memo = this.$store.getters.getMemoById(this.$route.params.memo_id)
+    if (memo) {
+      this.memo = memo
+    } else {
+      this.$router.push({ name: 'memos'})
+    }
+  },
   data () {
     return {
       memo: {}
@@ -32,11 +42,16 @@ export default {
   },
   methods: {
     submit () {
+      if(this.$route.params.memo_id) {
+        this.updateMemo({ id: this.$route.params.memo_id, memo: this.memo })
+      } else {
+          this.addMemo(this.memo)
+      }
       this.addMemo(this.memo)
       this.$router.push({ name: 'memos'})
       this.memo = {}
     },
-    ...mapActions(['addMemo'])
+    ...mapActions(['addMemo','updateMemo'])
   }
 }
 </script>

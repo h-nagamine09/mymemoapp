@@ -3,7 +3,7 @@
     <v-layout row wrap>
       <v-flex>
         <h1>Welcome! MY MEMO LIB!</h1>
-        <p>Please! Login with Google Account!</p>
+        <p>Please Login with Google Account!</p>
       </v-flex>
       <v-flex xs12 mt-5>
         <v-btn color='info' @click="login">Login with Google Account</v-btn>

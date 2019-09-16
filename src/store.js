@@ -15,19 +15,35 @@ export default new Vuex.Store({
     setLoginUser (state, user) {
       state.login_user = user
     },
-    deleteLoginUSer (state) {
-      stae.login_user = null
+    deleteLoginUser (state) {
+      state.login_user = null
     },
     toggleSideMenu (state) {
       state.drawer = !state.drawer
     },
-    addMemo (state, memo) { //エラー個所
+    addMemo (state, {id , memo}) {
+      memo.id = id
       state.memos.push(memo)
+    },
+    updateMemo (state, {id, memo}) {
+      const index = state.memos.findIndex(memo => memo.id === id)
+
+      state.memos[index] = memo
+    },
+    deleteMemo (state, { id }) {
+      const index = state.memos.findIndex(memo => memo.id === id)
+
+      state.memos.splice(index, 1)
     }
   },
   actions: {
     setLoginUser ({ commit }, user) {
       commit('setLoginUser',user)
+    },
+    fetchMemos ({ getters , commit }) {
+      firebase.firestore().collection(`users/${getters.uid}/memos`).get().then(snapshot => {
+        snapshot.forEach(doc => commit('addMemo' , { id: doc.id, memo: doc.data() }))
+      })
     },
     deleteLoginUser ({ commit }) {
       commit('deleteLoginUser')
@@ -44,12 +60,32 @@ export default new Vuex.Store({
     toggleSideMenu ({ commit }) {
       commit('toggleSideMenu') //mutationのメソッドを呼び出す
     },
-    addMemo ({ commit }, memo) {
-      commit('addMemo', memo)
+    addMemo ({ getters , commit }, memo) {
+      if (getters.uid) {
+        firebase.firestore().collection(`users/${getters.uid}/memos`).add(memo).then(doc => {
+          commit('addMemo', { id: doc.id, memo })
+        })
+      }
+    },
+    updateMemo ({ getters, commit }, {id , memo}) {
+      if (getters.uid) {
+        firebase.firestore().collection(`users/${getters.uid}/memos`).doc(id).update(memo).then(doc => {
+          commit('addMemo', { id: doc.id, memo })
+        })
+      }
+    },
+    deleteMemo ({ getters, commit }, { id }) {
+      if (getters.uid) {
+        firebase.firestore().collection(`users/${getters.uid}/memos`).doc(id).delete().then(() => {
+          commit('deleteMemo', { id })
+        })
+      }
     }
   },
   getters: {
     userName: state => state.login_user ? state.login_user.displayName: '',
-    photoURL: state => state.login_user ? state.login_user.photoURL: ''
+    photoURL: state => state.login_user ? state.login_user.photoURL: '',
+    uid: state => state.login_user ? state.login_user.uid : null,
+    getMemoById: state => id => state.memos.find(memo => memo.id === id) //関数を返す関数
   }
 })
